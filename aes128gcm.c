@@ -346,6 +346,21 @@ void aes128gcm(unsigned char *ciphertext, unsigned char *tag, const unsigned cha
 
 	InitialHashSubkey(H, k);	// H is computed with zero array H and k H = E(K, 0^128)
 
+	printf("PT:\n");
+	for (int i = 0; i < 16; ++i)
+		printf("%02x ", plaintext[i]);
+	printf("\n");
+
+	printf("key:\n");
+	for (int i = 0; i < 16; ++i)
+		printf("%02x ",k[i]);
+	printf("\n");
+
+	printf("IV:\n");
+	for (int i = 0; i < 12; ++i)
+		printf("%02x ",IV[i]);
+	printf("\n");
+
 	printf("Hsk:\n");
 	for (int i = 0; i < 16; ++i)
 		printf("%02x ", H[i]);
@@ -372,11 +387,11 @@ void aes128gcm(unsigned char *ciphertext, unsigned char *tag, const unsigned cha
 
 
 	printf("ghash_input:\n");
-	for (int i = 0; i < 16; ++i)
+	for (int i = 0; i < 32; ++i)
 		printf("%02x ", concat[i]);
 	printf("\n");
 
-	printf("ghash_output:\n");
+	printf("ghash_output %d:\n", len_total);
 	for (int i = 0; i < 16; ++i)
 		printf("%02x ", OUTPUT[i]);
 	printf("\n");
@@ -387,6 +402,11 @@ void aes128gcm(unsigned char *ciphertext, unsigned char *tag, const unsigned cha
 	printf("Tag:\n");
 	for (int i = 0; i < 16; ++i)
 		printf("%02x ", tag[i]);
+	printf("\n");
+
+	printf("Ctext:\n");
+	for (int i = 0; i < 16; ++i)
+		printf("%02x ", ciphertext[i]);
 	printf("\n");
 	exit(0);
 	
