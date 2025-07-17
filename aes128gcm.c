@@ -345,8 +345,24 @@ void aes128gcm(unsigned char *ciphertext, unsigned char *tag, const unsigned cha
 	*/
 
 	InitialHashSubkey(H, k);	// H is computed with zero array H and k H = E(K, 0^128)
+
+	printf("Hsk:\n");
+	for (int i = 0; i < 16; ++i)
+		printf("%02x ", H[i]);
+	printf("\n");
+
 	J0Definition(J0, IV);		// J0 is defined. len(IV)=96, then let J0 = IV || 0^31 || 1
+
+	printf("J0:\n");
+	for (int i = 0; i < 16; ++i)
+		printf("%02x ", J0[i]);
+	printf("\n");
 	IncrementingFunction(J0);	// First we increase J0 before passing to GCTR
+
+	printf("J1:\n");
+	for (int i = 0; i < 16; ++i)
+		printf("%02x ", J0[i]);
+	printf("\n");
 	
 	GCTR(ciphertext, J0, plaintext, k, len_p);	// GCTR is called to compute all the ciphertext using the plaintext, k and J0
 	
@@ -354,8 +370,25 @@ void aes128gcm(unsigned char *ciphertext, unsigned char *tag, const unsigned cha
 
 	GHASH(OUTPUT, H, concat, len_total);		// GHASH is called using the previous computed concat, H
 
+
+	printf("ghash_input:\n");
+	for (int i = 0; i < 16; ++i)
+		printf("%02x ", concat[i]);
+	printf("\n");
+
+	printf("ghash_output:\n");
+	for (int i = 0; i < 16; ++i)
+		printf("%02x ", OUTPUT[i]);
+	printf("\n");
+
 	J0Definition(J0, IV);			// J0 is redefined because the previous version had increments.
 	GCTR(tag, J0, OUTPUT, k, 1);	// GCTR is called to generate the TAG, we pass 1 as the length is always 16 bytes long 
+
+	printf("Tag:\n");
+	for (int i = 0; i < 16; ++i)
+		printf("%02x ", tag[i]);
+	printf("\n");
+	exit(0);
 	
 	/*printf("TAG: \n");
 	PrintVector(tag, Block);*/
